@@ -31,19 +31,22 @@ class CalendarsController < ApplicationController
 
     7.times do |x|
       today_plans = []
-      plan_date = @todays_date + x 
       plans.each do |plan|
-        today_plans.push(plan.plan) if plan.date == plan_date
+        today_plans.push(plan.plan) if plan.date == @todays_date + x
       end
     
-      wday_num = plan_date.wday 
+      wday_num = (@todays_date + x).wday 
       if wday_num >= 7
         wday_num = wday_num -7
       end    
 
-      days = { month: plan_date.month, date: plan_date.day, plans: today_plans, wday: wdays[wday_num]}
+      days = { 
+        month: (@todays_date + x).month,  # <= plan_date.month を (@todays_date + x).month に変更
+        date: (@todays_date + x).day,   # <= plan_date.day を (@todays_date + x).day に変更
+        plans: today_plans, 
+        wday: wdays[wday_num]
+      }
       @week_days.push(days)
     end
-
   end
 end
